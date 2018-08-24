@@ -33,7 +33,7 @@ def index():
         if email != "":
             emailok = check_email(email)
         if valid_name == "" and valid_pass == "" and matching_pass == "" and emailok == "":
-            return redirect("/validated")
+            return redirect("/validated?user={0}".format(name))
     
     return render_template("form.html", name=name, name_error=valid_name, pass1="", pass1_error=valid_pass, pass2="", pass2_error=matching_pass, email=email, email_error=emailok)
 
@@ -64,8 +64,9 @@ def check_email(submission):
         return ""
 
 
-@app.route("/validated", methods=["POST"])
+@app.route("/validated")
 def validated():
-    return render_template("validated.html", name=name)
+    user = request.args.get("user")
+    return render_template("validated.html", name=user)
 
 app.run()
